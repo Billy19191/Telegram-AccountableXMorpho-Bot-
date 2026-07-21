@@ -202,6 +202,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 			"📊 Status: %s\n"+
 			"📈 Net APY: %s%%\n"+
 			"💰 Net PNL (USD): $%s\n"+
+			"💧 Net Asset (USD): $%s\n"+
 			"----------------------\n"+
 			"🏦 Accountable\n\n"+
 			"📝 Name: %s\n"+
@@ -216,6 +217,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 		riskReport.OverallStatus,
 		util.FormatNumberWithSeparator(netApy),
 		util.FormatNumberWithSeparator(netPnl),
+		util.FormatNumberWithSeparator(accountable.Value-morpho.BorrowAssetsUsd),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
 		util.FormatNumberWithSeparator(accountable.UnrealizedPnl),
