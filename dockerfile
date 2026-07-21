@@ -8,7 +8,7 @@ RUN go mod tidy
 COPY . .
 RUN go build ./cmd/main.go
 
-EXPOSE 3000
+EXPOSE 3001
 CMD ["./main"]
 
 
