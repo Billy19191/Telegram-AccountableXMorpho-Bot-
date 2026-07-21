@@ -94,7 +94,7 @@ func handler(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	if len(accountableResult.VaultAllocations) == 0 {
+	if len(accountableResult.ResponseData.VaultAllocations) == 0 {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
 			Text:   "No accountable positions were returned by the API.",
@@ -110,7 +110,7 @@ func handler(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	accountableAllocation := accountableResult.VaultAllocations[0]
+	accountableAllocation := accountableResult.ResponseData.VaultAllocations[0]
 	morphoVault := morphoResult.ResponseData[0]
 	riskReport := service.EvaluateVaultRisk(accountableAllocation, morphoVault)
 	msg := formatVaultMessage(accountableAllocation, morphoVault, riskReport)
@@ -156,7 +156,7 @@ func checkAndNotify(ctx context.Context, b *bot.Bot, chatID int64, lastRoutineRe
 		return
 	}
 
-	if len(accountableResult.VaultAllocations) == 0 {
+	if len(accountableResult.ResponseData.VaultAllocations) == 0 {
 		log.Println("❌ Cron check returned no accountable positions.")
 		return
 	}
@@ -166,7 +166,7 @@ func checkAndNotify(ctx context.Context, b *bot.Bot, chatID int64, lastRoutineRe
 		return
 	}
 
-	accountableAllocation := accountableResult.VaultAllocations[0]
+	accountableAllocation := accountableResult.ResponseData.VaultAllocations[0]
 	morphoVault := morphoResult.ResponseData[0]
 	riskReport := service.EvaluateVaultRisk(accountableAllocation, morphoVault)
 	log.Printf("📋 Cron check — Status: %s", riskReport.OverallStatus)

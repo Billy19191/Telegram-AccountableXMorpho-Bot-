@@ -25,7 +25,7 @@ func NewAccountableService(baseURL, walletAddress, chainID string) *AccountableS
 }
 
 func (s *AccountableService) GetBorrowPositions() (*model.AccountableResponseEntity, error) {
-	url := fmt.Sprintf("%s/api/v1/position-accountable?walletAddress=%s&chainID=%s", s.BaseURL, s.WalletAddress, s.ChainID)
+	url := fmt.Sprintf("%s/api/v1/position-accountable?walletAddress=%s", s.BaseURL, s.WalletAddress)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)

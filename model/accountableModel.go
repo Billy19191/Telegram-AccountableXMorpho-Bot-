@@ -1,9 +1,13 @@
 package model
 
 type AccountableResponseEntity struct {
-	VaultAllocations []AccountableVaultAllocationEntity `json:"vault_allocations"`
+	ResponseCode int             `json:"responseCode"`
+	ResponseData ValueAllocation `json:"responseData"`
 }
 
+type ValueAllocation struct {
+	VaultAllocations []AccountableVaultAllocationEntity `json:"vault_allocations"`
+}
 type AccountableVaultAllocationEntity struct {
 	Apy                      float64 `json:"apy"`
 	CanDeposit               bool    `json:"canDeposit"`

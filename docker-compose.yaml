@@ -1,5 +1,5 @@
 services:
-  telegram-morpho-bot:
+  telegram-accountable-morpho-bot:
     build: .
     ports:
       - '${PORT}:${PORT}'
