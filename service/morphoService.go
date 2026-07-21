@@ -24,8 +24,8 @@ func NewMorphoService(baseURL, walletAddress, chainID string) *MorphoService {
 	}
 }
 
-func (s *MorphoService) GetVaultPositions() (*model.MorphoResponseEntity, error) {
-	url := fmt.Sprintf("%s/api/v1/vaultPosition?walletAddress=%s&chainID=%s", s.BaseURL, s.WalletAddress, s.ChainID)
+func (s *MorphoService) GetBorrowPosition() (*model.MorphoResponseEntity, error) {
+	url := fmt.Sprintf("%s/api/v1/borrowPositionPosition?walletAddress=%s&chainID=%s", s.BaseURL, s.WalletAddress, s.ChainID)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)

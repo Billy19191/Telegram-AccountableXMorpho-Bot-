@@ -6,24 +6,13 @@ type MorphoResponseEntity struct {
 }
 
 type VaultEntity struct {
-	VaultName     string  `json:"vaultName"`
-	TotalAssetUsd float64 `json:"totalAssetUsd"`
-	Liquidity     float64 `json:"liquidity"`
-	MyAssetUsd    float64 `json:"myAssetUsd"`
-	NetApy        float64 `json:"netApy"`
-	SharedInVault float64 `json:"sharedInVault"`
-}
-
-type MorphoResponseModel struct {
-	ResponseCode int          `json:"responseCode"`
-	ResponseData []VaultModel `json:"responseData"`
-}
-
-type VaultModel struct {
-	VaultName     string  `json:"vaultName"`
-	TotalAssetUsd float64 `json:"totalAssetUsd"`
-	Liquidity     float64 `json:"liquidity"`
-	MyAssetUsd    float64 `json:"myAssetUsd"`
-	NetApy        float64 `json:"netApy"`
-	SharedInVault float64 `json:"sharedInVault"`
+	Name            string  `json:"name"`
+	HealthFactor    float64 `json:"healthFactor"`
+	BorrowPnlUsd    float64 `json:"borrowPnlUsd"`
+	BorrowAssetsUsd float64 `json:"borrowAssetsUsd"`
+	CollateralUsd   float64 `json:"collateralUsd"`
+	AvgBorrowApy    float64 `json:"avgBorrowApy"`
+	NetBorrowApy    float64 `json:"netBorrowApy"`
+	CollateralAsset string  `json:"collateralAsset"`
+	LoanAsset       string  `json:"loanAsset"`
 }

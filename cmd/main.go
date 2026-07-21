@@ -85,7 +85,7 @@ func handler(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	morphoResult, err := morphoService.GetVaultPositions()
+	morphoResult, err := morphoService.GetBorrowPosition()
 	if err != nil {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
@@ -150,7 +150,7 @@ func checkAndNotify(ctx context.Context, b *bot.Bot, chatID int64, lastRoutineRe
 		return
 	}
 
-	morphoResult, err := morphoService.GetVaultPositions()
+	morphoResult, err := morphoService.GetBorrowPosition()
 	if err != nil {
 		log.Printf("❌ Cron check failed: %v", err)
 		return
@@ -196,22 +196,27 @@ func checkAndNotify(ctx context.Context, b *bot.Bot, chatID int64, lastRoutineRe
 func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity, riskReport model.RiskReport) string {
 	return fmt.Sprintf(
 		"⚡ Summary\n"+
-			"📈 Net APY: %s%%\n\n"+
-			"——\n"+
+			"📈 Net APY: %s%%\n"+
+			"💹 Net PNL (USD): $%s\n"+
+			"----------------------\n"+
 			"🏦 Accountable\n"+
 			"📝 Name: %s\n"+
 			"📈 Deposit APY: %s%%\n"+
-			"💰 Deposit PNL (USD): %s\n\n"+
-			"——\n"+
+			"💰 Deposit PNL (USD): $%s\n"+
+			"----------------------\n"+
 			"🏛️ Morpho\n"+
 			"📝 Name: %s\n"+
+			"❤️ Health Factor: %s\n"+
 			"📉 Borrow APY: %s%% (Net)\n"+
-			"💰 Borrow PNL (USD): N/A\n",
-		util.FormatNumberWithSeparator(morpho.NetApy),
+			"💰 Borrow PNL (USD): $%s\n",
+		util.FormatNumberWithSeparator(morpho.NetBorrowApy+accountable.Apy),
+		util.FormatNumberWithSeparator(accountable.UnrealizedPnl+morpho.BorrowPnlUsd),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
 		util.FormatNumberWithSeparator(accountable.UnrealizedPnl),
-		morpho.VaultName,
-		util.FormatNumberWithSeparator(morpho.NetApy),
+		morpho.Name,
+		util.FormatNumberWithSeparator(morpho.HealthFactor),
+		util.FormatNumberWithSeparator(morpho.NetBorrowApy),
+		util.FormatNumberWithSeparator(morpho.BorrowPnlUsd),
 	)
 }
