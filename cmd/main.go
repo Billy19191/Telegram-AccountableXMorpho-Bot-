@@ -194,23 +194,28 @@ func checkAndNotify(ctx context.Context, b *bot.Bot, chatID int64, lastRoutineRe
 }
 
 func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity, riskReport model.RiskReport) string {
+	netApy := calculateNetApy(accountable, morpho)
+	netPnl := calculateNetPnl(accountable, morpho)
+
 	return fmt.Sprintf(
-		"⚡ Summary\n"+
+		"⚡ Portfolio Summary\n\n"+
+			"📊 Status: %s\n"+
 			"📈 Net APY: %s%%\n"+
-			"💹 Net PNL (USD): $%s\n"+
+			"💰 Net PNL (USD): $%s\n"+
 			"----------------------\n"+
-			"🏦 Accountable\n"+
+			"🏦 Accountable\n\n"+
 			"📝 Name: %s\n"+
 			"📈 Deposit APY: %s%%\n"+
 			"💰 Deposit PNL (USD): $%s\n"+
 			"----------------------\n"+
-			"🏛️ Morpho\n"+
+			"🏛️ Morpho\n\n"+
 			"📝 Name: %s\n"+
 			"❤️ Health Factor: %s\n"+
 			"📉 Borrow APY: %s%% (Net)\n"+
 			"💰 Borrow PNL (USD): $%s\n",
-		util.FormatNumberWithSeparator(morpho.NetBorrowApy+accountable.Apy),
-		util.FormatNumberWithSeparator(accountable.UnrealizedPnl+morpho.BorrowPnlUsd),
+		riskReport.OverallStatus,
+		util.FormatNumberWithSeparator(netApy),
+		util.FormatNumberWithSeparator(netPnl),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
 		util.FormatNumberWithSeparator(accountable.UnrealizedPnl),
@@ -219,4 +224,17 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 		util.FormatNumberWithSeparator(morpho.NetBorrowApy),
 		util.FormatNumberWithSeparator(morpho.BorrowPnlUsd),
 	)
+}
+
+func calculateNetApy(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
+	denominator := accountable.MyDepositUsd - morpho.BorrowAssetsUsd
+	if denominator == 0 {
+		return 0
+	}
+
+	return (accountable.Apy*accountable.Value - morpho.NetBorrowApy*morpho.BorrowAssetsUsd) / denominator
+}
+
+func calculateNetPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
+	return accountable.UnrealizedPnl + morpho.BorrowPnlUsd
 }
