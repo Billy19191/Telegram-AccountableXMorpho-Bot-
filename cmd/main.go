@@ -260,6 +260,6 @@ func estimateDailyPnl(accountable model.AccountableVaultAllocationEntity, morpho
 		return 0
 	}
 
-	dailyPnl := (netApy / 365 * 100) * denominator
+	dailyPnl := (netApy / (365 * 100)) * denominator
 	return dailyPnl
 }
