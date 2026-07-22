@@ -209,6 +209,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 			"📊 Status: %s\n"+
 			"📈 Net APY: %s%%\n"+
 			"💰 Net PNL (USD): $%s\n"+
+			"📈 Est. Daily PNL (USD): $%s\n"+
 			"💧 Net Asset (USD): $%s\n"+
 			"----------------------\n"+
 			"🏦 Accountable\n\n"+
@@ -219,11 +220,12 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 			"🏛️ Morpho\n\n"+
 			"📝 Name: %s\n"+
 			"❤️ Health Factor: %s\n"+
-			"📉 Borrow APY: %s%% (Net)\n"+
+			"📉 Borrow APY: %s%%\n"+
 			"💰 Borrow PNL (USD): $%s\n",
 		riskReport.OverallStatus,
 		util.FormatNumberWithSeparator(netApy),
 		util.FormatNumberWithSeparator(netPnl),
+		util.FormatNumberWithSeparator(estimateDailyPnl(accountable, morpho)),
 		util.FormatNumberWithSeparator(accountable.Value-morpho.BorrowAssetsUsd),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
@@ -246,4 +248,15 @@ func calculateNetApy(accountable model.AccountableVaultAllocationEntity, morpho 
 
 func calculateNetPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
 	return accountable.UnrealizedPnl + morpho.BorrowPnlUsd
+}
+
+func estimateDailyPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
+	netApy := calculateNetApy(accountable, morpho)
+	denominator := accountable.MyDepositUsd - morpho.BorrowAssetsUsd
+	if denominator == 0 {
+		return 0
+	}
+
+	dailyPnl := (netApy / 365) * denominator
+	return dailyPnl
 }
