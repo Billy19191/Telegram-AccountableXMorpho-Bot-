@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
@@ -52,6 +53,12 @@ func main() {
 
 	opts := []bot.Option{
 		bot.WithDefaultHandler(handler),
+		bot.WithErrorsHandler(func(err error) {
+			log.Printf("[TGBOT] [ERROR] %v", err)
+		}),
+		bot.WithHTTPClient(90*time.Second, &http.Client{
+			Timeout: 90 * time.Second,
+		}),
 	}
 
 	tgBot, err := bot.New(tgBotToken, opts...)
