@@ -205,19 +205,22 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 	netPnl := calculateNetPnl(accountable, morpho)
 
 	return fmt.Sprintf(
-		"⚡ Portfolio Summary\n\n"+
+		"⚡ Portfolio Summary\n"+
+			"----------------------\n"+
 			"📊 Status: %s\n"+
 			"📈 Net APY: %s%%\n"+
 			"💰 Net PNL (USD): $%s\n"+
 			"📈 Est. Daily PNL (USD): $%s\n"+
 			"💧 Net Asset (USD): $%s\n"+
 			"----------------------\n"+
-			"🏦 Accountable\n\n"+
+			"🏦 Accountable\n"+
+			"----------------------\n"+
 			"📝 Name: %s\n"+
 			"📈 Deposit APY: %s%%\n"+
 			"💰 Deposit PNL (USD): $%s\n"+
 			"----------------------\n"+
-			"🏛️ Morpho\n\n"+
+			"🏛️ Morpho\n"+
+			"----------------------\n"+
 			"📝 Name: %s\n"+
 			"❤️ Health Factor: %s\n"+
 			"📉 Borrow APY: %s%%\n"+
@@ -257,6 +260,6 @@ func estimateDailyPnl(accountable model.AccountableVaultAllocationEntity, morpho
 		return 0
 	}
 
-	dailyPnl := (netApy / 365) * denominator
+	dailyPnl := (netApy / 365 * 100) * denominator
 	return dailyPnl
 }
