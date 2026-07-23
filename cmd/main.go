@@ -56,8 +56,8 @@ func main() {
 		bot.WithErrorsHandler(func(err error) {
 			log.Printf("[TGBOT] [ERROR] %v", err)
 		}),
-		bot.WithHTTPClient(90*time.Second, &http.Client{
-			Timeout: 90 * time.Second,
+		bot.WithHTTPClient(30*time.Second, &http.Client{
+			Timeout: 60 * time.Second,
 		}),
 	}
 
