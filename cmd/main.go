@@ -232,7 +232,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 		util.FormatNumberWithSeparator(accountable.Value-morpho.BorrowAssetsUsd),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
-		util.FormatNumberWithSeparator(accountable.UnrealizedPnl),
+		util.FormatNumberWithSeparator(accountable.UnrealizedPnl+accountable.Pnl),
 		morpho.Name,
 		util.FormatNumberWithSeparator(morpho.HealthFactor),
 		util.FormatNumberWithSeparator(morpho.NetBorrowApy),
