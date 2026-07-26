@@ -250,7 +250,7 @@ func calculateNetApy(accountable model.AccountableVaultAllocationEntity, morpho 
 }
 
 func calculateNetPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
-	return accountable.UnrealizedPnl + morpho.BorrowPnlUsd
+	return (accountable.UnrealizedPnl + accountable.Pnl) + morpho.BorrowPnlUsd
 }
 
 func estimateDailyPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
