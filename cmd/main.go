@@ -229,7 +229,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 		util.FormatNumberWithSeparator(netApy),
 		util.FormatNumberWithSeparator(netPnl),
 		util.FormatNumberWithSeparator(estimateDailyPnl(accountable, morpho)),
-		util.FormatNumberWithSeparator(accountable.Value-morpho.BorrowAssetsUsd),
+		util.FormatNumberWithSeparator(accountable.TotalInvestedInVaultUsd-morpho.BorrowAssetsUsd),
 		accountable.VaultName,
 		util.FormatNumberWithSeparator(accountable.Apy),
 		util.FormatNumberWithSeparator(accountable.UnrealizedPnl+accountable.Pnl),
@@ -241,7 +241,7 @@ func formatVaultMessage(accountable model.AccountableVaultAllocationEntity, morp
 }
 
 func calculateNetApy(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
-	denominator := accountable.MyDepositUsd - morpho.BorrowAssetsUsd
+	denominator := accountable.TotalInvestedInVaultUsd - morpho.BorrowAssetsUsd
 	if denominator == 0 {
 		return 0
 	}
@@ -255,7 +255,7 @@ func calculateNetPnl(accountable model.AccountableVaultAllocationEntity, morpho 
 
 func estimateDailyPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
 	netApy := calculateNetApy(accountable, morpho)
-	denominator := accountable.MyDepositUsd - morpho.BorrowAssetsUsd
+	denominator := accountable.TotalInvestedInVaultUsd - morpho.BorrowAssetsUsd
 	if denominator == 0 {
 		return 0
 	}

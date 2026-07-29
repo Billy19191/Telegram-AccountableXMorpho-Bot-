@@ -33,4 +33,5 @@ type AccountableVaultAllocationEntity struct {
 	Value                    float64 `json:"value"`
 	VaultAddress             string  `json:"vaultAddress"`
 	VaultName                string  `json:"vaultName"`
+	TotalInvestedInVaultUsd  float64 `json:"totalInvestedInVaultUsd"`
 }
