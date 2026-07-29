@@ -246,7 +246,7 @@ func calculateNetApy(accountable model.AccountableVaultAllocationEntity, morpho 
 		return 0
 	}
 	//accountable.Apy-1% because it is Points ACC (accountable), not actual APY.
-	return ((accountable.Apy-1)*accountable.Value - morpho.NetBorrowApy*morpho.BorrowAssetsUsd) / denominator
+	return ((accountable.Apy-1)*accountable.TotalInvestedInVaultUsd - morpho.NetBorrowApy*morpho.BorrowAssetsUsd) / denominator
 }
 
 func calculateNetPnl(accountable model.AccountableVaultAllocationEntity, morpho model.VaultEntity) float64 {
